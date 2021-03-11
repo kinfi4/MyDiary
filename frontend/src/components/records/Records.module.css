@@ -1,0 +1,10 @@
+.records{
+    display: flex;
+    flex-direction: row;
+
+    width: 1200px;
+    margin: auto;
+    flex-wrap: wrap;
+
+    justify-content: center;
+}

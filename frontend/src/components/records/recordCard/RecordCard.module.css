@@ -1,0 +1,29 @@
+.record{
+    background-color: #c9c9c9;
+    border: 1px #b6b6b6 solid;
+    display: inline-block;
+    width: 350px;
+    margin: 10px;
+    border-radius: 4px;
+
+    overflow: hidden;
+    height: 200px;
+
+    transition: linear 0.2s;
+}
+
+.record:hover{
+    background-color: #b1b1b1;
+}
+
+.record h3 {
+    color: #4c4c4c;
+    margin-top: 10px;
+
+}
+.record p {
+    color: #898989;
+    float: left;
+    margin-left: 10px;
+    text-align: left;
+}

@@ -1,3 +1,9 @@
 from django.test import TestCase
 
-# Create your tests here.
+from api.models import DailyRecord
+
+
+class RecordTest(TestCase):
+    def setUp(self):
+        DailyRecord.objects.create('')
+

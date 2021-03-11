@@ -1,0 +1,27 @@
+.card{
+    background-color: #909090;
+    vertical-align: middle;
+    border: 1px #909090 solid;
+    border-radius: 4px;
+    width: 350px;
+    margin: 10px;
+
+    overflow: hidden;
+    height: 200px;
+
+    transition: linear 0.2s;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card:hover{
+    background-color: #e3e3e3;
+}
+
+.add_sign{
+    font-weight: bold;
+    font-size: 100px;
+
+}
