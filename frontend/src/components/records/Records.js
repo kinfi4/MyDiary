@@ -3,7 +3,8 @@ import React, {useEffect} from 'react'
 import RecordCard from "./recordCard/RecordCard";
 import AddRecordCard from "./addRecordCard/addRecordCard";
 import {connect} from 'react-redux'
-import {fetchRecords} from './../../redux/reducers/recordReducers'
+import {fetchRecords} from '../../redux/reducers/allRecordReducer'
+import FullRecord from "./fullRecord/fullRecord";
 
 
 const Records = (props) => {
@@ -13,6 +14,7 @@ const Records = (props) => {
 
     return (
         <div className={s.records}>
+            <FullRecord title={'I love Ira'} body={'Hope we are going to be together'} created={'today'} />
             <AddRecordCard />
                 {
                     props.records.map(el => <RecordCard title={el.title} body={el.body} />)

@@ -1,10 +1,10 @@
 import {createStore, combineReducers, applyMiddleware} from 'redux'
-import {records} from './reducers/recordReducers'
+import {allRecords} from './reducers/allRecordReducer'
 import thunk from 'redux-thunk'
 
 
 let store = createStore(
-    combineReducers({records: records }),
+    combineReducers({ records: allRecords }),
     applyMiddleware(thunk)
 )
 

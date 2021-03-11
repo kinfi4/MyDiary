@@ -10,7 +10,7 @@ export let fetchRecords = (url) => {
     }
 }
 
-export let records = (state=[], action) => {
+export let allRecords = (state=[], action) => {
     switch (action.type){
         case GET_RECORDS:
             return action.recordsData
