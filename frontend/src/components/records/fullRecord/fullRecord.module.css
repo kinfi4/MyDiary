@@ -4,6 +4,15 @@
 
     position: absolute;
     background-color: rgba(0, 0, 0, 0.7);
+
+    opacity: 0;
+    transition: 0.5s;
+    pointer-events: none;
+}
+
+.overflow.active{
+    pointer-events: all;
+    opacity: 1;
 }
 
 .topPanel{

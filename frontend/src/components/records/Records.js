@@ -1,5 +1,5 @@
 import s from './Records.module.css'
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import RecordCard from "./recordCard/RecordCard";
 import AddRecordCard from "./addRecordCard/addRecordCard";
 import {connect} from 'react-redux'
@@ -12,9 +12,13 @@ const Records = (props) => {
         props.fetchRecords('http://127.0.0.1:8000/api/records');
     });
 
+    const [fullRecordActive, setFullRecordActive] = useState(true);
+
     return (
         <div className={s.records}>
-            <FullRecord title={'I love Ira'} body={'Hope we are going to be together'} created={'today'} />
+            <FullRecord title={'I love Ira!'} body={'Just some body here'} created={'03/08/2002'}
+                        active={fullRecordActive} setActive={setFullRecordActive} />
+
             <AddRecordCard />
                 {
                     props.records.map(el => <RecordCard title={el.title} body={el.body} />)

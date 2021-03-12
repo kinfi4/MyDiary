@@ -2,9 +2,10 @@ import s from './fullRecord.module.css'
 import React from 'react'
 
 const FullRecord = (props) => {
+
     return (
-        <div className={s.overflow}>
-            <div className={s.record}>
+        <div className={props.active ? `${s.overflow} ${s.active}` : s.overflow} onClick={() => props.setActive(false) }>
+            <div className={s.record} onClick={e => e.stopPropagation() }>
                 <div className={s.topPanel}>
                     <h2>{props.title}</h2>
 
@@ -20,7 +21,7 @@ const FullRecord = (props) => {
 
                 <div className={s.buttonPanel}>
                     <div className={s.createdAt}>
-                        03/08/2002
+                        {props.created}
                     </div>
                 </div>
             </div>
