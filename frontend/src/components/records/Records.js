@@ -4,7 +4,8 @@ import RecordCard from "./recordCard/RecordCard";
 import AddRecordCard from "./addRecordCard/addRecordCard";
 import {connect} from 'react-redux'
 import {fetchRecords} from '../../redux/reducers/allRecordReducer'
-import FullRecord from "./fullRecord/fullRecord";
+import FullRecordBase from "./fullRecord/fullRecordBase";
+import FullRecordRead from "./fullRecord/fullRecordRead/fullRecordRead";
 
 
 const Records = (props) => {
@@ -16,8 +17,9 @@ const Records = (props) => {
 
     return (
         <div className={s.records}>
-            <FullRecord title={'I love Ira!'} body={'Just some body here'} created={'03/08/2002'}
-                        active={fullRecordActive} setActive={setFullRecordActive} />
+            <FullRecordBase active={fullRecordActive} setActive={setFullRecordActive} >
+                <FullRecordRead title={'I love Ira'} body={'Some body around here'} created={'03/08/2002'} />
+            </FullRecordBase>
 
             <AddRecordCard />
                 {
