@@ -1,42 +1,55 @@
+.inner{
+    height: 100%;
+}
 .topPanel{
     width: 100%;
+    min-height: 80px;
 }
 
-.buttonsBlock{
-    position: absolute;
-    top: 20px;
-    right: 40px;
-    float: right;
-}
-
-.manageButton{
-    width: 70px;
-    margin-left: 10px;
-}
-
-.recordTitle{
-    text-align: left;
-    margin: 20px;
-    margin-bottom: 10px;
-}
-
-
-.recordBody{
-    color: #282c34;
-    overflow: auto;
-    max-height: 700px;
-
-    text-align: left;
-    margin-left: 20px;
-}
-
-.buttonPanel{
+.bodyBlock{
     width: 100%;
+    height: 100%;
+    display: block;
 }
 
-.createdAt{
-    color: #898989;
-    position: absolute;
-    bottom: 10px;
-    right: 40px;
+.titleInput{
+    margin: 20px 30px;
+    float: left;
+    cursor: text;
+    display: block;
+    border: none;
+
+    width: 90%;
+    font-size: 30px;
+    background-color: #b8b8b8;
+}
+
+
+.titleInput:focus{
+    outline: none;
+}
+
+.bodyInput:empty::before {
+    content: attr(data-placeholder);
+    color: #555;
+}
+
+.bodyInput{
+    text-align: left;
+    width: 95%;
+    min-height: 400px;
+    font-size: 20px;
+    padding: 10px;
+
+    border-radius: 5px;
+    border: #afafaf 1px solid;
+
+    margin: auto;
+    margin-bottom: 20px;
+
+}
+
+.bodyInput:focus{
+    outline: none;
+
 }
