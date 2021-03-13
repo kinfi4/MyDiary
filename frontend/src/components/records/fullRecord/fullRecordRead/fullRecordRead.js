@@ -1,7 +1,14 @@
 import s from './fullRecordRead.module.css'
 import React from 'react'
 
-const FullRecordRead = ({ title, body, created }) => {
+const FullRecordRead = ({ title, body, created, id, onDeleteRecord, onUpdateRecord}) => {
+    let deleteInstance = () => {
+        onDeleteRecord(id);
+    }
+
+    let updateInstance = () => {
+        onUpdateRecord({title: title, body: body})
+    }
 
     return (
         <div>
@@ -9,8 +16,8 @@ const FullRecordRead = ({ title, body, created }) => {
                 <h2 className={s.recordTitle}>{title}</h2>
 
                 <div className={s.buttonsBlock}>
-                    <button className={'btn btn-primary ' + s.manageButton}>Edit</button>
-                    <button className={'btn btn-danger ' + s.manageButton}>Delete</button>
+                    <button className={'btn btn-primary ' + s.manageButton} onClick={updateInstance}>Edit</button>
+                    <button className={'btn btn-danger ' + s.manageButton} onClick={deleteInstance}>Delete</button>
                 </div>
             </div>
             <hr/>

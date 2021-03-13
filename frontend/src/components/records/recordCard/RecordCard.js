@@ -3,7 +3,7 @@ import React from 'react'
 
 const RecordCard = (props) => {
     let manageOnClick = () => {
-        props.eventOnClick({title: props.title, body: props.body, created: props.created})
+        props.eventOnClick({title: props.title, body: props.body, created: props.created, id: props.id})
     }
     return (
         <div className={s.record} onClick={manageOnClick}>
