@@ -10,5 +10,5 @@ class DailyRecord(models.Model):
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
 
-    def __repr__(self):
+    def __str__(self):
         return self.title

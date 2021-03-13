@@ -7,14 +7,18 @@ from django.http import Http404
 
 from api.models import DailyRecord
 from api.serializers import RecordGetCreateSerializer, RecordUpdateSerializer
+from api.permissoin import IsAuthorPermission
 
 
 class AllRecords(APIView):
+    permission_classes = (IsAuthorPermission,)
+
     def get(self, request: Request):
         records = RecordGetCreateSerializer(DailyRecord.objects.all(), many=True)
         return Response(records.data)
 
     def post(self, request: Request):
+        request.data.update({'author': request.user})
         new_record = RecordGetCreateSerializer(data=request.data)
 
         if new_record.is_valid(raise_exception=True):
@@ -25,6 +29,8 @@ class AllRecords(APIView):
 
 
 class OneRecord(APIView):
+    # permission_classes = (IsAuthorPermission,)
+
     @staticmethod
     def get_object(pk):
         try:

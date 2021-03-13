@@ -3,7 +3,7 @@ import React from 'react'
 
 const AddRecordCard = (props) => {
     return (
-        <div className={s.card}>
+        <div className={s.card} onClick={props.eventOnClick}>
             <h1 className={s.add_sign}>&#x2B;</h1>
         </div>
     )
