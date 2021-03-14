@@ -18,18 +18,33 @@ class AllRecords(APIView):
         return Response(records.data)
 
     def post(self, request: Request):
+        print('it came here')
+        print(request.data)
+        print(request.GET)
+        print(request.POST)
+        print(request.user)
+        print(request.auth)
+        print(request.content_type)
+        print(request.parsers)
+        print(request.negotiator)
+        print('requested data')
         request.data.update({'author': request.user})
         new_record = RecordGetCreateSerializer(data=request.data)
 
-        if new_record.is_valid(raise_exception=True):
+        print('new record created')
+
+        if new_record.is_valid(raise_exception=False):
+            print('new record is valid')
             new_record.save(author=request.user)
+            print('new record is saved')
             return Response(new_record.data)
 
+        print('new record Is not valid')
         return Response(status=HTTP_400_BAD_REQUEST)
 
 
 class OneRecord(APIView):
-    # permission_classes = (IsAuthorPermission,)
+    permission_classes = (IsAuthenticated,)
 
     @staticmethod
     def get_object(pk):
@@ -43,6 +58,16 @@ class OneRecord(APIView):
         return Response(record.data)
 
     def put(self, request: Request, pk):
+
+        print(request.data)
+        print(request.GET)
+        print(request.POST)
+        print(request.user)
+        print(request.auth)
+        print(request.content_type)
+        print(request.parsers)
+        print(request.negotiator)
+
         record = RecordUpdateSerializer(self.get_object(pk), data=request.data)
 
         if record.is_valid():

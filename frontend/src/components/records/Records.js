@@ -1,5 +1,7 @@
 import s from './Records.module.css'
 import React, {useEffect, useState} from 'react'
+import axios from "axios"
+
 import RecordCard from "./recordCard/RecordCard";
 import AddRecordCard from "./addRecordCard/addRecordCard";
 import {connect} from 'react-redux'
@@ -33,30 +35,43 @@ const Records = (props) => {
 
 
     let deleteRecord = (id) => {
-        fetch('http://127.0.0.1:8000/api/v1/records/' + id, {method: 'DELETE'}).then(r => r).catch(er => console.log(er))
-        setFullRecordActive(false);
-    }
-
-    let createRecord = (title, body, id) => {
-        fetch('http://127.0.0.1:8000/api/v1/records', {
-            method: 'POST',
+        fetch('http://127.0.0.1:8000/api/v1/records/' + id, {
+            method: 'DELETE',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({title: title, body: body})
-        }).catch(er => alert(er))
+                'Authorization': `Token ${props.authToken}`
+            }
+        }).then(r => r).catch(er => console.log(er))
+        setFullRecordActive(false);
+        setDetailWindowContent(null);
     }
 
-    let updateRecord = (title, body, id) => {
+    let createRecord = ({title, body, id}) => {
+        alert(`Title: ${title}`)
+        alert(`Body: ${body}`)
+        alert(`Id: ${id}`)
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${props.authToken}`
+        }
+        axios.post('http://127.0.0.1:8000/api/v1/records', JSON.stringify({title: title, body: body}), {headers: headers})
+            .then(res => console.log(res.data))
+
+        setFullRecordActive(false);
+        setDetailWindowContent(null);
+    }
+
+    let updateRecord = ({title, body, id}) => {
         fetch('http://127.0.0.1:8000/api/v1/records/' + id, {
             method: 'PUT',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${props.authToken}`
             },
             body: JSON.stringify({title: title, body: body})
         }).catch(er => alert(er))
+        setFullRecordActive(false);
+        setDetailWindowContent(null)
     }
 
 
