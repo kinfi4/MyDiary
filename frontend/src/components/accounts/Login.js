@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link, Redirect} from "react-router-dom";
 import PropTypes from 'prop-types';
 
-export class Login extends Component {
+class Login extends Component {
     state = {
         username: '',
         password: '',
@@ -27,7 +27,6 @@ export class Login extends Component {
                 password: password,
             })
         }).catch(er => alert(er))
-
     };
 
     onChange = (e) => this.setState({ [e.target.name]: e.target.value });
@@ -69,7 +68,7 @@ export class Login extends Component {
                             </button>
                         </div>
                         <p>
-                            Already have an account? <Link to="/register">Register</Link>
+                            A new user? <Link to="/register">Register</Link>
                         </p>
                     </form>
                 </div>

@@ -11,7 +11,7 @@ export class Register extends Component {
     }
 
     static propTypes = {
-        register: PropTypes.func.isRequired,
+        // register: PropTypes.func.isRequired,
         isAuthenticated: PropTypes.bool,
     };
 
@@ -33,7 +33,7 @@ export class Register extends Component {
                     password1: password,
                     password2: password
                 })
-            }).catch(er => alert(er))
+            }).catch(er => alert('er'))
         }
     };
 
