@@ -2,6 +2,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_204_NO_CONTENT
+from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 
@@ -11,10 +12,10 @@ from api.permissoin import IsAuthorPermission
 
 
 class AllRecords(APIView):
-    permission_classes = (IsAuthorPermission,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request: Request):
-        records = RecordGetCreateSerializer(DailyRecord.objects.all(), many=True)
+        records = RecordGetCreateSerializer(request.user.records.all(), many=True)
         return Response(records.data)
 
     def post(self, request: Request):
@@ -22,7 +23,7 @@ class AllRecords(APIView):
         new_record = RecordGetCreateSerializer(data=request.data)
 
         if new_record.is_valid(raise_exception=True):
-            new_record.save()
+            new_record.save(author=request.user)
             return Response(new_record.data)
 
         return Response(status=HTTP_400_BAD_REQUEST)

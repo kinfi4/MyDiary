@@ -7,7 +7,7 @@ const FullRecordRead = ({ title, body, created, id, onDeleteRecord, onUpdateReco
     }
 
     let updateInstance = () => {
-        onUpdateRecord({title: title, body: body})
+        onUpdateRecord({title: title, body: body, id: id})
     }
 
     return (

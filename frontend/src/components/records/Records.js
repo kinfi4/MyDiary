@@ -6,7 +6,6 @@ import {connect} from 'react-redux'
 import {fetchRecords} from '../../redux/reducers/allRecordReducer'
 import FullRecordBase from "./fullRecord/fullRecordBase";
 import FullRecordRead from "./fullRecord/fullRecordRead/fullRecordRead";
-import FullRecordCreate from "./fullRecord/fullRecordUpdateCreate/fullRecordUpdateCreate";
 import FullRecordUpdateCreate from "./fullRecord/fullRecordUpdateCreate/fullRecordUpdateCreate";
 
 
@@ -14,6 +13,7 @@ const Records = (props) => {
     useEffect(() => {
         props.fetchRecords('http://127.0.0.1:8000/api/v1/records');
     });
+
 
     let renderDetailsOfClicked = ({title, body, created, id}) => {
         setFullRecordActive(true)
@@ -23,18 +23,42 @@ const Records = (props) => {
 
     let renderAddNewRecordWindow = () => {
         setFullRecordActive(true)
-        setDetailWindowContent(<FullRecordCreate />)
+        setDetailWindowContent(<FullRecordUpdateCreate onUpdate={false} onSave={createRecord} />)
     }
 
-    let renderUpdateRecordWindow = ({title, body}) => {
+    let renderUpdateRecordWindow = ({title, body, id}) => {
         setFullRecordActive(true)
-        setDetailWindowContent(<FullRecordUpdateCreate title={title} body={body} />)
+        setDetailWindowContent(<FullRecordUpdateCreate onUpdate={true} title={title} body={body} id={id} onSave={updateRecord} />)
     }
+
 
     let deleteRecord = (id) => {
         fetch('http://127.0.0.1:8000/api/v1/records/' + id, {method: 'DELETE'}).then(r => r).catch(er => console.log(er))
         setFullRecordActive(false);
     }
+
+    let createRecord = (title, body, id) => {
+        fetch('http://127.0.0.1:8000/api/v1/records', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({title: title, body: body})
+        }).catch(er => alert(er))
+    }
+
+    let updateRecord = (title, body, id) => {
+        fetch('http://127.0.0.1:8000/api/v1/records/' + id, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({title: title, body: body})
+        }).catch(er => alert(er))
+    }
+
 
     let closeDetailWindow = () => {
         setDetailWindowContent(null)
@@ -52,15 +76,15 @@ const Records = (props) => {
 
             <AddRecordCard eventOnClick={renderAddNewRecordWindow} />
                 {
-                    props.records.map(el => <RecordCard title={el.title} body={el.body} created={el.created} id={el.id} eventOnClick={renderDetailsOfClicked} />)
-                }
+                   props.records.map(el => <RecordCard title={el.title} body={el.body} created={el.created} id={el.id} eventOnClick={renderDetailsOfClicked} />)
+		        }
         </div>
     )
 }
 
 let mapStateToProps = (state) => {
     return {
-        records: state.records
+    	records: state.records[0] ? state.records : []
     }
 }
 

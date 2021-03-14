@@ -45,11 +45,17 @@
     border: #afafaf 1px solid;
 
     margin: auto;
-    margin-bottom: 20px;
-
 }
 
 .bodyInput:focus{
     outline: none;
+}
 
+.buttonBlock{
+    text-align: right;
+    margin: 20px;
+}
+
+.saveButton{
+    font-size: larger;
 }
