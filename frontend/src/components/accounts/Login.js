@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Link, Redirect} from "react-router-dom";
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {login} from "../../redux/reducers/authReducers";
 
 class Login extends Component {
     state = {
@@ -9,24 +11,13 @@ class Login extends Component {
     }
 
     static propTypes = {
-        register: PropTypes.func.isRequired,
+        login: PropTypes.func.isRequired,
         isAuthenticated: PropTypes.bool,
     };
 
     onSubmit = (e) => {
         e.preventDefault();
-        const { username, password } = this.state;
-        fetch('http://localhost:8000/api/v1/rest-auth/login/', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: username,
-                password: password,
-            })
-        }).catch(er => alert(er))
+        this.props.login(this.state.username, this.state.password)
     };
 
     onChange = (e) => this.setState({ [e.target.name]: e.target.value });
@@ -64,7 +55,7 @@ class Login extends Component {
                         </div>
                         <div className="form-group">
                             <button type="submit" className="btn btn-primary">
-                                Register
+                                Login
                             </button>
                         </div>
                         <p>
@@ -77,4 +68,10 @@ class Login extends Component {
     }
 }
 
-export default Login;
+let mapStateToProps = (state) => {
+    return {
+        isAuthenticated: state.auth.isAuthenticated
+    }
+}
+
+export default connect(mapStateToProps, {login})(Login);

@@ -8,7 +8,6 @@ from django.http import Http404
 
 from api.models import DailyRecord
 from api.serializers import RecordGetCreateSerializer, RecordUpdateSerializer
-from api.permissoin import IsAuthorPermission
 
 
 class AllRecords(APIView):

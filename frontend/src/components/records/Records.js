@@ -11,7 +11,7 @@ import FullRecordUpdateCreate from "./fullRecord/fullRecordUpdateCreate/fullReco
 
 const Records = (props) => {
     useEffect(() => {
-        props.fetchRecords('http://127.0.0.1:8000/api/v1/records');
+        props.fetchRecords('http://127.0.0.1:8000/api/v1/records', props.authToken);
     });
 
 
@@ -84,13 +84,14 @@ const Records = (props) => {
 
 let mapStateToProps = (state) => {
     return {
-    	records: state.records[0] ? state.records : []
+    	records: state.records[0] ? state.records : [],
+        authToken: state.auth.token
     }
 }
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        fetchRecords: (url) => { dispatch(fetchRecords(url)) }
+        fetchRecords: (url, token) => { dispatch(fetchRecords(url, token)) }
     }
 }
 

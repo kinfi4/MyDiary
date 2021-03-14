@@ -25,7 +25,7 @@ export class Register extends Component {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     username: username,
@@ -33,7 +33,7 @@ export class Register extends Component {
                     password1: password,
                     password2: password
                 })
-            }).catch(er => alert('er'))
+            }).catch(er => alert(er))
         }
     };
 

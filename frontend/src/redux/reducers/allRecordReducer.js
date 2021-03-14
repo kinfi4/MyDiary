@@ -1,8 +1,14 @@
 const GET_RECORDS = 'GET_RECORDS'
 
-export let fetchRecords = (url) => {
+export let fetchRecords = (url, token) => {
+    // alert(`Token ${token}`)
     return (dispatch) => {
-        fetch(url).then(response => {
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Token ${token}`
+            }
+        }).then(response => {
             return response.json()
         }).then(recordsJson => {
             return dispatch({type: GET_RECORDS, recordsData: recordsJson})
