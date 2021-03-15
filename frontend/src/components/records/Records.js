@@ -15,8 +15,7 @@ const Records = (props) => {
 
     return (
         <div className={s.records}>
-            <FullRecordBase>
-            </FullRecordBase>
+            <FullRecordBase />
 
             <AddRecordCard />
                 {
