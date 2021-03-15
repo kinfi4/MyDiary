@@ -1,5 +1,4 @@
 import './App.css';
-import Records from "./components/records/Records";
 import 'bootstrap/dist/css/bootstrap.css'
 import {BrowserRouter, Redirect, Route} from 'react-router-dom'
 import Register from "./components/accounts/Register";
@@ -8,6 +7,7 @@ import PrivateRout from "./components/PrivateRout/PrivateRout";
 import {loadUser} from "./redux/reducers/authReducers";
 import {useEffect} from "react";
 import store from './redux/store'
+import MainPage from "./components/general/mainPage";
 
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
     return (
         <BrowserRouter >
             <div className="App">
-                <PrivateRout exact path={'/'} component={Records} />
+                <PrivateRout exact path={'/'} component={MainPage} />
                 <Route exact path={'/register'} render={() => <Register />} />
                 <Route exact path={'/login'} render={() => <Login />} />
             </div>

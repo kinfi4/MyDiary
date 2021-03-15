@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { SHOW_WRITE_RECORD, HIDE_RECORD, SHOW_READ_RECORD} from "./showDetailedRecord";
+import { HIDE_RECORD } from "./showDetailedRecord";
 
 
 const CREATE_RECORD = 'CREATE_RECORD'

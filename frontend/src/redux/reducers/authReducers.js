@@ -1,4 +1,5 @@
 import {onBFCacheRestore} from "web-vitals/dist/modules/lib/onBFCacheRestore";
+import axios from "axios";
 
 const USER_LOADING = 'USER_LOADING'
 const USER_LOADED = 'USER_LOADED'
@@ -6,6 +7,7 @@ const AUTH_ERROR = ' AUTH_ERROR'
 
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 const LOGIN_FAIL = 'LOGIN_FAIL'
+const LOGOUT = 'LOGOUT'
 
 const initialState = {
     token: localStorage.getItem('token'),
@@ -67,6 +69,14 @@ export const login = (username, password) => (dispatch) => {
     })
 }
 
+// LOGOUT
+export const logout = (authToken) => (dispatch) => {
+    axios.post('http://127.0.0.1:8000/api/v1/rest-auth/logout/', {}, {
+        headers: {
+            'Authorization': `Token ${authToken}`
+        }
+    }).then(res => dispatch({type: LOGOUT}))
+}
 
 // REDUCER
 export function auth (state=initialState, action){
@@ -95,6 +105,7 @@ export function auth (state=initialState, action){
             }
         case AUTH_ERROR:
         case LOGIN_FAIL:
+        case LOGOUT:
             localStorage.removeItem('token')
             return {
                 ...state,
