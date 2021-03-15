@@ -29,15 +29,16 @@ const FullRecordUpdateCreate = (props) => {
                        max={128}
                        ref={titleRef}
                        defaultValue={props.title ? props.title : null} />
+
+                <div className={s.buttonBlock}>
+                    <button className={'btn btn-success ' + s.saveButton} onClick={e => onSubmitButtonClick(e)}>Save</button>
+                </div>
             </div>
+            <hr/>
             <div className={s.bodyBlock}>
                 <div contentEditable={"true"} data-placeholder={'Here goes my day'} className={s.bodyInput} ref={bodyRef}>
                     {props.body ? props.body : null}
                 </div>
-            </div>
-
-            <div className={s.buttonBlock}>
-                <button className={'btn btn-success ' + s.saveButton} onClick={e => onSubmitButtonClick(e)}>Save</button>
             </div>
         </div>
 

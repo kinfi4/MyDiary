@@ -1,15 +1,25 @@
+hr{
+    margin: 0;
+}
 .inner{
     height: 100%;
 }
+
 .topPanel{
     width: 100%;
     min-height: 80px;
+
+    display: flex;
+    justify-content: space-between;
 }
 
 .bodyBlock{
+    margin-top: 10px;
     width: 100%;
     height: 100%;
     display: block;
+
+    max-height: 500px;
 }
 
 .titleInput{
@@ -21,7 +31,7 @@
 
     width: 90%;
     font-size: 30px;
-    background-color: #b8b8b8;
+    background-color: #cbe3e3;
 }
 
 
@@ -41,9 +51,6 @@
     font-size: 20px;
     padding: 10px;
 
-    border-radius: 5px;
-    border: #afafaf 1px solid;
-
     margin: auto;
 }
 
@@ -53,7 +60,7 @@
 
 .buttonBlock{
     text-align: right;
-    margin: 20px;
+    margin: 20px 40px;
 }
 
 .saveButton{

@@ -1,5 +1,5 @@
 .card{
-    background-color: #909090;
+    background-color: #f8ffff;
     vertical-align: middle;
     border: 1px #909090 solid;
     border-radius: 4px;
@@ -17,7 +17,7 @@
 }
 
 .card:hover{
-    background-color: #e3e3e3;
+    background-color: #ffbebe;
 }
 
 .add_sign{

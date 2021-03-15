@@ -1,5 +1,5 @@
 .record{
-    background-color: #c9c9c9;
+    background-color: #f8ffff;
     border: 1px #b6b6b6 solid;
     display: inline-block;
     width: 350px;
@@ -13,7 +13,7 @@
 }
 
 .record:hover{
-    background-color: #b1b1b1;
+    background-color: #cffff4;
 }
 
 .record h3 {
