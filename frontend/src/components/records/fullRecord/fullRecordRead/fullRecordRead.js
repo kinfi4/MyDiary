@@ -1,19 +1,22 @@
 import s from './fullRecordRead.module.css'
 import React from 'react'
+import {connect} from 'react-redux'
+import {deleteRecord} from "../../../../redux/reducers/createUpdateDeleteRecord";
+import {showUpdateWindow} from "../../../../redux/reducers/showDetailedRecord";
 
-const FullRecordRead = ({ title, body, created, id, onDeleteRecord, onUpdateRecord}) => {
+const FullRecordRead = (props) => {
     let deleteInstance = () => {
-        onDeleteRecord(id);
+        props.deleteRecord({id: props.id, authToken: props.authToken})
     }
 
-    let updateInstance = () => {
-        onUpdateRecord({title: title, body: body, id: id})
+    function updateInstance() {
+        props.showUpdateWindow({title: props.title, body: props.body, id: props.id})
     }
 
     return (
         <div>
             <div className={s.topPanel}>
-                <h2 className={s.recordTitle}>{title}</h2>
+                <h2 className={s.recordTitle}>{props.title}</h2>
 
                 <div className={s.buttonsBlock}>
                     <button className={'btn btn-primary ' + s.manageButton} onClick={updateInstance}>Edit</button>
@@ -22,16 +25,31 @@ const FullRecordRead = ({ title, body, created, id, onDeleteRecord, onUpdateReco
             </div>
             <hr/>
             <div className={s.recordBody}>
-                {body}
+                {props.body}
             </div>
 
             <div className={s.buttonPanel}>
                     <div className={s.createdAt}>
-                        {created}
+                        {props.created}
                     </div>
                 </div>
         </div>
     )
 }
 
-export default FullRecordRead;
+let mapStateToProps = (state) => {
+    return {
+        authToken: state.auth.token
+    }
+}
+
+
+let mapDispatchToProps = (dispatch) => {
+    return {
+        deleteRecord: ({id, authToken}) => dispatch(deleteRecord({id, authToken})),
+        showUpdateWindow: ({title, body, id}) => dispatch(showUpdateWindow({title, body, id}))
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(FullRecordRead);
