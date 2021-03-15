@@ -24,7 +24,11 @@ const FullRecordUpdateCreate = (props) => {
     return (
         <div className={s.inner}>
             <div className={s.topPanel}>
-                <input placeholder={curDate} className={s.titleInput} max={128} value={props.title ? props.title : null} ref={titleRef} />
+                <input placeholder={curDate}
+                       className={s.titleInput}
+                       max={128}
+                       ref={titleRef}
+                       defaultValue={props.title ? props.title : null} />
             </div>
             <div className={s.bodyBlock}>
                 <div contentEditable={"true"} data-placeholder={'Here goes my day'} className={s.bodyInput} ref={bodyRef}>
