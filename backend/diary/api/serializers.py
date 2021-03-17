@@ -7,7 +7,7 @@ from api.models import DailyRecord
 class RecordGetCreateSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     title = serializers.CharField(max_length=128, required=False, allow_blank=True)
-    body = serializers.CharField()
+    body = serializers.CharField(required=False)
     created = serializers.DateTimeField(read_only=True)
 
     def create(self, validated_data):

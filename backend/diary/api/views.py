@@ -8,13 +8,20 @@ from django.http import Http404
 
 from api.models import DailyRecord
 from api.serializers import RecordGetCreateSerializer, RecordUpdateSerializer
+from api.exceptions import ObjectNotExistOrNoPermission
+from api import helpers
 
 
 class AllRecords(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request: Request):
-        records = RecordGetCreateSerializer(request.user.records.all(), many=True)
+        fields = list(request.query_params.keys())
+        records = RecordGetCreateSerializer(
+            helpers.get_user_records(request.user, fields),
+            many=True
+        )
+
         return Response(records.data)
 
     def post(self, request: Request):
@@ -32,14 +39,14 @@ class OneRecord(APIView):
     permission_classes = (IsAuthenticated,)
 
     @staticmethod
-    def get_object(pk):
+    def get_object(user, pk):
         try:
-            return DailyRecord.objects.get(pk=pk)
-        except ObjectDoesNotExist:
+            return helpers.get_record(user, pk)
+        except ObjectNotExistOrNoPermission:
             raise Http404
 
     def get(self, request: Request, pk):
-        record = RecordGetCreateSerializer(self.get_object(pk))
+        record = RecordGetCreateSerializer(self.get_object(request.user, pk))
         return Response(record.data)
 
     def put(self, request: Request, pk):
