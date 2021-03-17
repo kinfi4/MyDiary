@@ -3,10 +3,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_204_NO_CONTENT
 from rest_framework.permissions import IsAuthenticated
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 
-from api.models import DailyRecord
 from api.serializers import RecordGetCreateSerializer, RecordUpdateSerializer
 from api.exceptions import ObjectNotExistOrNoPermission
 from api import helpers
@@ -29,7 +27,7 @@ class AllRecords(APIView):
         new_record = RecordGetCreateSerializer(data=request.data)
 
         if new_record.is_valid(raise_exception=False):
-            new_record.save(author=request.user)
+            new_record.save()
             return Response(new_record.data)
 
         return Response(status=HTTP_400_BAD_REQUEST)
@@ -50,7 +48,7 @@ class OneRecord(APIView):
         return Response(record.data)
 
     def put(self, request: Request, pk):
-        record = RecordUpdateSerializer(self.get_object(pk), data=request.data)
+        record = RecordUpdateSerializer(self.get_object(request.user, pk), data=request.data)
 
         if record.is_valid():
             record.save()

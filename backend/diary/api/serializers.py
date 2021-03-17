@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from datetime import datetime
 
-from api.models import DailyRecord
+from api import helpers
 
 
 class RecordGetCreateSerializer(serializers.Serializer):
@@ -11,12 +10,7 @@ class RecordGetCreateSerializer(serializers.Serializer):
     created = serializers.DateTimeField(read_only=True)
 
     def create(self, validated_data):
-        if not validated_data.get('title'):
-            validated_data['title'] = datetime.now().strftime('%Y/%m/%d %H:%M')
-
-        new_record = DailyRecord(**validated_data)
-        new_record.save()
-
+        new_record = helpers.create_record(**validated_data)
         return new_record
 
     def update(self, instance, validated_data):

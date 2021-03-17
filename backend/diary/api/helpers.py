@@ -1,6 +1,8 @@
+from datetime import datetime
+
 from django.core.exceptions import ObjectDoesNotExist
 
-from api.models import User, DailyRecord
+from api.models import DailyRecord
 from api.exceptions import ObjectNotExistOrNoPermission
 
 
@@ -13,3 +15,11 @@ def get_record(user, pk):
         return user.records.get(pk=pk)
     except ObjectDoesNotExist:
         raise ObjectNotExistOrNoPermission
+
+
+def create_record(*args, **kwargs):
+    if not kwargs.get('title'):
+        kwargs['title'] = datetime.now().strftime('%Y/%m/%d %H:%M')
+
+    new_record = DailyRecord.objects.create(**kwargs)
+    return new_record
