@@ -45,6 +45,7 @@ export const loadUser = () => (dispatch, getState) => {
 
 // LOGIN
 export const login = (username, password) => (dispatch) => {
+    dispatch({type: USER_LOADING})
     const headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -71,6 +72,7 @@ export const login = (username, password) => (dispatch) => {
 
 // LOGOUT
 export const logout = (authToken) => (dispatch) => {
+    dispatch({type: USER_LOADING})
     axios.post('http://127.0.0.1:8000/api/v1/rest-auth/logout/', {}, {
         headers: {
             'Authorization': `Token ${authToken}`
