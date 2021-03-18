@@ -78,22 +78,27 @@ class RecordCRUDTests(APITestCase):
 
         # Adding the first record
         response = self.client.post(Urls.ALL_RECORDS_URL.value, data=json.dumps({
-            'body': 'Some body',
-            'title': 'title'
-        }), content_type='application/json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        # Adding the second record
-        response = self.client.post(Urls.ALL_RECORDS_URL.value, data=json.dumps({
             'title': TestData.RECORDS_TITLES.value[0],
             'body': TestData.RECORDS_BODIES.value[0]
         }), content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+        # Adding the second record
+        response = self.client.post(Urls.ALL_RECORDS_URL.value, data=json.dumps({
+            'title': TestData.RECORDS_TITLES.value[1],
+            'body': TestData.RECORDS_BODIES.value[1]
+        }), content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
         # Changing the second record
-        self.client.put(Urls.ALL_RECORDS_URL.value + '/' + str(DailyRecord.objects.first()), data=json.dumps({
+        self.client.put(Urls.ALL_RECORDS_URL.value + '/' + str(DailyRecord.objects.first().id), data=json.dumps({
             'title': TestData.RECORDS_TITLES.value[1]
         }), content_type='application/json')
+
+        # Checking the edited instance
+        response = self.client.get(Urls.ALL_RECORDS_URL.value + '/' + str(DailyRecord.objects.first().id))
+        self.assertEqual(response.data.get('title'), TestData.RECORDS_TITLES.value[1])
+        self.assertEqual(response.data.get('body'), TestData.RECORDS_BODIES.value[0])
 
         # Deleting the first record
         self.client.delete(Urls.ALL_RECORDS_URL.value + '/' + str(DailyRecord.objects.all().first().id))
@@ -105,6 +110,9 @@ class RecordCRUDTests(APITestCase):
 
         self.assertEqual(response.data[0].get('title'), list(db_response)[0].title)
         self.assertEqual(response.data[0].get('body'), list(db_response)[0].body)
+
+        self.assertEqual(response.data[0].get('title'), TestData.RECORDS_TITLES.value[1])
+        self.assertEqual(response.data[0].get('body'), TestData.RECORDS_BODIES.value[1])
 
         self.assertEqual(len(list(response.data)), 1)
         self.assertEqual(len(db_response), 1)
