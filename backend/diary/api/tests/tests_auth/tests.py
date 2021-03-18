@@ -9,9 +9,11 @@ from api.tests.tests_auth.constants import Urls, Responses, TestDatabaseData
 
 class TestAuthAPI(APITestCase):
     def setUp(self) -> None:
-        self.user = User.objects.create_user(username=TestDatabaseData.USER_USERNAME.value,
-                                             password=TestDatabaseData.USER_PASSWORD.value,
-                                             email=TestDatabaseData.USER_EMAIL.value)
+        self.user = User.objects.create_user(
+            username=TestDatabaseData.USER_USERNAME.value,
+            password=TestDatabaseData.USER_PASSWORD.value,
+            email=TestDatabaseData.USER_EMAIL.value
+        )
 
         self.token = Token.objects.create(user=self.user)
         self.client = Client(HTTP_AUTHORIZATION=f'Token {self.token.key}')

@@ -1,11 +1,11 @@
 from enum import Enum
+from unittest import mock
 
 from django.urls import reverse
 
 
 class Urls(Enum):
     ALL_RECORDS_URL = reverse('records')
-    SINGLE_RECORD_URL = reverse('one_record')
 
 
 class TestData(Enum):
@@ -22,7 +22,33 @@ class TestData(Enum):
 
 
 class TestResponses(Enum):
-    pass
+    ALL_RECORDS_RESPONSE = [
+        {
+            'id': mock.ANY,
+            'title': record_title,
+            'body': record_body,
+            'created': mock.ANY
+        } for record_title, record_body in zip(TestData.RECORDS_TITLES.value, TestData.RECORDS_BODIES.value)
+    ]
 
+    ALL_RECORDS_TITLES_BODIES_RESPONSE = [
+        {
+            'title': record_title,
+            'body': record_body
+        } for record_title, record_body in zip(TestData.RECORDS_TITLES.value, TestData.RECORDS_BODIES.value)
+    ]
 
+    SINGLE_RECORD_RESPONSE = {
+        'id': mock.ANY,
+        'title': TestData.RECORDS_TITLES.value[0],
+        'body': TestData.RECORDS_BODIES.value[0],
+        'created': mock.ANY
+    }
 
+    NO_AUTHENTICATION_RESPONSE = {
+        "detail": "Authentication credentials were not provided."
+    }
+
+    NOT_FOUND_RESPONSE = {
+        "detail": "Not found."
+    }

@@ -23,8 +23,10 @@ class AllRecords(APIView):
         return Response(records.data)
 
     def post(self, request: Request):
-        request.data.update({'author': request.user})
-        new_record = RecordGetCreateSerializer(data=request.data)
+        request_data = dict(request.data)
+        request_data.update({'author_id': request.user.id})
+
+        new_record = RecordGetCreateSerializer(data=request_data)
 
         if new_record.is_valid(raise_exception=False):
             new_record.save()
@@ -57,5 +59,5 @@ class OneRecord(APIView):
         return Response(status=HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        self.get_object(pk).delete()
+        self.get_object(request.user, pk).delete()
         return Response(status=HTTP_204_NO_CONTENT)

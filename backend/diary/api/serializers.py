@@ -8,6 +8,7 @@ class RecordGetCreateSerializer(serializers.Serializer):
     title = serializers.CharField(max_length=128, required=False, allow_blank=True)
     body = serializers.CharField(required=False)
     created = serializers.DateTimeField(read_only=True)
+    author_id = serializers.IntegerField(required=True, write_only=True)
 
     def create(self, validated_data):
         new_record = helpers.create_record(**validated_data)
