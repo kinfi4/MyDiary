@@ -1,5 +1,6 @@
 import {onBFCacheRestore} from "web-vitals/dist/modules/lib/onBFCacheRestore";
 import axios from "axios";
+import {CLEAR_THE_STATE} from "./allRecordReducer";
 
 const USER_LOADING = 'USER_LOADING'
 const USER_LOADED = 'USER_LOADED'
@@ -72,6 +73,7 @@ export const login = (username, password) => (dispatch) => {
 
 // LOGOUT
 export const logout = (authToken) => (dispatch) => {
+    dispatch({type: CLEAR_THE_STATE})
     dispatch({type: USER_LOADING})
     axios.post('http://127.0.0.1:8000/api/v1/rest-auth/logout/', {}, {
         headers: {

@@ -1,40 +1,102 @@
 import s from './Records.module.css'
-import React, {useEffect} from 'react'
+import React, {useEffect, useCallback, useRef} from 'react'
 
 import RecordCard from "./recordCard/RecordCard";
 import AddRecordCard from "./addRecordCard/addRecordCard";
 import {connect} from 'react-redux'
 import {fetchRecords} from '../../redux/reducers/allRecordReducer'
 import FullRecordBase from "./fullRecord/fullRecordBase";
+import AnimatedRecordsLoading from "../some_stuff/loading_records_animation/AnimatedRecordsLoading";
 
 
 const Records = (props) => {
-    useEffect(() => {
-        props.fetchRecords('http://127.0.0.1:8000/api/v1/records', props.authToken);
-    });
+    let observer = useRef()
+
+    let fetchNewRecords = () => {
+        console.log(`Loading: ${props.loading}`)
+        console.log(`Current page: ${props.current_page}`)
+
+        props.fetchRecords(props.authToken, props.current_page);
+    }
+
+    let lastRecordRef = useCallback(node => {
+        console.log(node)
+        if(props.loading)
+            return
+
+        if(observer.current) {
+            console.log('Disconnected')
+            observer.current.disconnect()
+        }
+
+        observer.current = new IntersectionObserver(entries => {
+            if(entries[0].isIntersecting){
+                fetchNewRecords()
+            }
+        })
+
+        console.log(observer.current)
+
+        if (node)
+            observer.current.observe(node)
+    })
+
+    let render_records = () => {
+        if(props.records.length === 0){
+            console.log('First fetch')
+            fetchNewRecords()
+        } else {
+            console.log(props.records.length)
+            return props.records.map((el, index) => {
+                if(index === props.records.length - 1) {
+                    console.log('last record found ' + index)
+                    return (
+                        <div ref={lastRecordRef}>
+                            <RecordCard title={el.title} body={el.body} created={el.created} id={el.id} />
+                        </div>
+                    )
+                }
+                else {
+                    return (
+                        <div>
+                            <RecordCard title={el.title} body={el.body} created={el.created} id={el.id} />
+                        </div>
+                    )
+                }
+            })
+        }
+    }
 
     return (
         <div className={s.records}>
             <FullRecordBase />
 
-            <AddRecordCard />
+            <div className={s.recordsBlock}>
+                <AddRecordCard />
+
                 {
-                   props.records.map(el => <RecordCard title={el.title} body={el.body} created={el.created} id={el.id} />)
-		        }
+                    render_records()
+                }
+
+            </div>
+
+            {props.loading && <AnimatedRecordsLoading/>}
         </div>
     )
 }
 
 let mapStateToProps = (state) => {
     return {
-    	records: state.records[0] ? state.records : [],
-        authToken: state.auth.token
+    	records: state.records.records[0] ? state.records.records : [],
+        authToken: state.auth.token,
+        current_page: state.records.current_page,
+        loading: state.records.loading
     }
 }
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        fetchRecords: (url, token) => { dispatch(fetchRecords(url, token)) }
+        fetchRecords: (token, page) => { dispatch(fetchRecords(token, page)) }
     }
 }
 

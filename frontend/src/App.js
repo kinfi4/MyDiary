@@ -1,4 +1,3 @@
-import './App.css';
 import 'bootstrap/dist/css/bootstrap.css'
 import {BrowserRouter, Redirect, Route} from 'react-router-dom'
 import Register from "./components/accounts/Register";

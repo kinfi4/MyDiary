@@ -1,7 +1,7 @@
 import React from 'react'
-import s from './AnimatedLoading.module.css'
+import s from './AnimatedPageLoading.module.css'
 
-let AnimatedLoading = () => {
+let AnimatedPageLoading = () => {
     return (
         <div className={s['lds-ring']}>
             <div></div>
@@ -12,4 +12,4 @@ let AnimatedLoading = () => {
     )
 }
 
-export default AnimatedLoading;
+export default AnimatedPageLoading;
