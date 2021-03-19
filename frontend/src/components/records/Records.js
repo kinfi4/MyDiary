@@ -13,19 +13,14 @@ const Records = (props) => {
     let observer = useRef()
 
     let fetchNewRecords = () => {
-        console.log(`Loading: ${props.loading}`)
-        console.log(`Current page: ${props.current_page}`)
-
         props.fetchRecords(props.authToken, props.current_page);
     }
 
     let lastRecordRef = useCallback(node => {
-        console.log(node)
         if(props.loading)
             return
 
         if(observer.current) {
-            console.log('Disconnected')
             observer.current.disconnect()
         }
 
@@ -35,21 +30,16 @@ const Records = (props) => {
             }
         })
 
-        console.log(observer.current)
-
         if (node)
             observer.current.observe(node)
     })
 
     let render_records = () => {
         if(props.records.length === 0){
-            console.log('First fetch')
             fetchNewRecords()
         } else {
-            console.log(props.records.length)
             return props.records.map((el, index) => {
                 if(index === props.records.length - 1) {
-                    console.log('last record found ' + index)
                     return (
                         <div ref={lastRecordRef}>
                             <RecordCard title={el.title} body={el.body} created={el.created} id={el.id} />

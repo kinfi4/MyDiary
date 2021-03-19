@@ -13,7 +13,6 @@ const initialState = {
 
 export let fetchRecords = (token, page) => {
     return (dispatch) => {
-        console.log('FETCH RECORDS')
         axios.get('http://127.0.0.1:8000/api/v1/records?page=' + page, {
             headers: {
                 'Authorization': `Token ${token}`
@@ -25,7 +24,6 @@ export let fetchRecords = (token, page) => {
 }
 
 export let allRecords = (state=initialState, action) => {
-    console.log(action.type)
     switch (action.type){
         case LOADING_RECORDS:
             return {
@@ -39,10 +37,8 @@ export let allRecords = (state=initialState, action) => {
                     loading: false
                 }
 
-            console.log(`GET RECORDS ${action.recordsData.length}`)
             let cur_records = state.records
             let cur_page = state.current_page
-            console.log(`GET RECORDS ${cur_records.length}`)
             return {
                 ...state,
                 records: [... new Set(cur_records.concat(action.recordsData))],
