@@ -1,4 +1,5 @@
 from datetime import datetime
+from diary.settings import PAGE_SIZE
 
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -6,8 +7,8 @@ from api.models import DailyRecord
 from api.exceptions import ObjectNotExistOrNoPermission
 
 
-def get_user_records(user, fields):
-    return user.records.all().values(*fields)
+def get_user_records(user, fields, skip=0, number=PAGE_SIZE):
+    return user.records.all().order_by('created').values(*fields)[skip:skip+number]
 
 
 def get_record(user, pk):

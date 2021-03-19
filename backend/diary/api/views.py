@@ -8,6 +8,7 @@ from django.http import Http404
 from api.serializers import RecordGetCreateSerializer, RecordUpdateSerializer
 from api.exceptions import ObjectNotExistOrNoPermission
 from api import helpers
+from diary.settings import PAGE_SIZE
 
 
 class AllRecords(APIView):
@@ -15,8 +16,13 @@ class AllRecords(APIView):
 
     def get(self, request: Request):
         fields = list(request.query_params.keys())
+
+        if 'page' in fields:
+            fields.remove('page')
+
+        page = int(request.query_params.get('page', 0))
         records = RecordGetCreateSerializer(
-            helpers.get_user_records(request.user, fields),
+            helpers.get_user_records(request.user, fields, page*PAGE_SIZE, PAGE_SIZE),
             many=True
         )
 
