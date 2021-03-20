@@ -8,7 +8,7 @@ from api.exceptions import ObjectNotExistOrNoPermission
 
 
 def get_user_records(user, fields, skip=0, number=PAGE_SIZE):
-    return user.records.all().order_by('created').values(*fields)[skip:skip+number]
+    return user.records.all().order_by('-created').values(*fields)[skip:skip+number]
 
 
 def get_record(user, pk):
