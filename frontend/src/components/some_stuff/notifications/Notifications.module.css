@@ -1,0 +1,6 @@
+.notification_block{
+    position: fixed;
+    width: 300px;
+    top: 30px;
+    right: 10px;
+}

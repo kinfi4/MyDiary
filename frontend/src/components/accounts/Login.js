@@ -3,6 +3,7 @@ import {Link, Redirect} from "react-router-dom";
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {login} from "../../redux/reducers/authReducers";
+import Notifications from "../some_stuff/notifications/Notifications";
 
 class Login extends Component {
     state = {
@@ -29,41 +30,44 @@ class Login extends Component {
         }
         const { username, password } = this.state;
         return (
-            <div className="col-md-3 m-auto">
-                <div className="card card-body mt-5">
-                    <h2 className="text-center">Login</h2>
-                    <form onSubmit={this.onSubmit}>
-                        <div className="form-group">
-                            <label>Username</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                name="username"
-                                onChange={this.onChange}
-                                value={username}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Password</label>
-                            <input
-                                type="password"
-                                className="form-control"
-                                name="password"
-                                onChange={this.onChange}
-                                value={password}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <button type="submit" className="btn btn-primary">
-                                Login
-                            </button>
-                        </div>
-                        <p>
-                            A new user? <Link to="/register">Register</Link>
-                        </p>
-                    </form>
+            <>
+                <Notifications />
+                <div className="col-md-3 m-auto">
+                    <div className="card card-body mt-5">
+                        <h2 className="text-center">Login</h2>
+                        <form onSubmit={this.onSubmit}>
+                            <div className="form-group">
+                                <label>Username</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="username"
+                                    onChange={this.onChange}
+                                    value={username}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Password</label>
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    name="password"
+                                    onChange={this.onChange}
+                                    value={password}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <button type="submit" className="btn btn-primary">
+                                    Login
+                                </button>
+                            </div>
+                            <p>
+                                A new user? <Link to="/register">Register</Link>
+                            </p>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            </>
         );
     }
 }

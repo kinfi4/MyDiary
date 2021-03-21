@@ -12,12 +12,14 @@ const AUTH_ERROR = ' AUTH_ERROR'
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 const LOGIN_FAIL = 'LOGIN_FAIL'
 const LOGOUT = 'LOGOUT'
+const REGISTRATION_ERROR = 'REGISTRATION_ERROR'
 
 const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     isLoading: false,
-    user: null
+    user: null,
+    errors: []
 }
 
 // CHECK THE TOKEN AND LOAD THE USER
@@ -42,9 +44,7 @@ export const loadUser = () => (dispatch, getState) => {
             dispatch({type: USER_LOADED, payload: res.data})
         else
             dispatch({type: AUTH_ERROR })
-    }).catch(er => {
-        dispatch({type: AUTH_ERROR})
-    })
+    }).catch(er => er)
 }
 
 // LOGIN
@@ -99,7 +99,9 @@ export const register = (username, email, password1, password2) => (dispatch) =>
         }
     }).then(
         res => dispatch({type: LOGIN_SUCCESS, payload: res.data})
-    ).catch(err => console.log(err))
+    ).catch(err => {
+        dispatch({type: REGISTRATION_ERROR, errors: err.response.data})
+    })
 
 }
 
@@ -127,10 +129,27 @@ export function auth (state=initialState, action){
                 ...state,
                 token: action.payload.key,
                 isAuthenticated: true,
-                isLoading: false
+                isLoading: false,
+                errors: []
+            }
+        case REGISTRATION_ERROR:
+            let errors = Object.values(action.errors).flat()
+            return {
+                isAuthenticated: false,
+                isLoading: false,
+                token: null,
+                user: null,
+                errors: errors
             }
         case AUTH_ERROR:
         case LOGIN_FAIL:
+            return {
+                isAuthenticated: false,
+                isLoading: false,
+                token: null,
+                user: null,
+                errors: ['Username or password is incorrect']
+            }
         case LOGOUT:
             localStorage.removeItem('token')
             return {
