@@ -2,6 +2,8 @@ import axios from 'axios'
 
 import { HIDE_RECORD } from "./showDetailedRecord";
 
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+axios.defaults.xsrfCookieName = "csrftoken";
 
 export const CREATE_RECORD = 'CREATE_RECORD'
 export const DELETE_RECORD = 'DELETE_RECORD'
@@ -12,7 +14,7 @@ let initialState = {}
 export let deleteRecord = ({id, authToken}) => (dispatch) => {
     axios.delete('http://127.0.0.1:8000/api/v1/records/' + id, {
         headers: {
-            'Authorization': `Token ${authToken}`
+            'Authorization': `Token ${authToken}`,
         }
     }).then(r => dispatch({type: DELETE_RECORD}))
       .catch(err => alert(`Error: ${err}`))

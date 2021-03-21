@@ -1,6 +1,9 @@
-import {onBFCacheRestore} from "web-vitals/dist/modules/lib/onBFCacheRestore";
 import axios from "axios";
 import {CLEAR_THE_STATE} from "./allRecordReducer";
+
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+axios.defaults.xsrfCookieName = "csrftoken";
+
 
 const USER_LOADING = 'USER_LOADING'
 const USER_LOADED = 'USER_LOADED'
@@ -31,12 +34,12 @@ export const loadUser = () => (dispatch, getState) => {
         headers['Authorization'] = `Token ${token}`
     }
 
-    fetch('http://127.0.0.1:8000/api/v1/rest-auth/user', {
+    axios.get('http://127.0.0.1:8000/api/v1/rest-auth/user', {
         method: 'GET',
         headers: headers
     }).then(res => {
         if(res.status === 200)
-            dispatch({type: USER_LOADED, payload: res.json()})
+            dispatch({type: USER_LOADED, payload: res.data})
         else
             dispatch({type: AUTH_ERROR })
     }).catch(er => {
@@ -59,13 +62,10 @@ export const login = (username, password) => (dispatch) => {
         email: ''
     })
 
-    fetch('http://127.0.0.1:8000/api/v1/rest-auth/login/', {
-        method: 'POST',
+    axios.post('http://127.0.0.1:8000/api/v1/rest-auth/login/', body,{
         headers: headers,
-        body: body
-    }).then(res => res.json())
-      .then(data => {
-        dispatch({ type: LOGIN_SUCCESS, payload: data })
+    }).then(res => {
+        dispatch({ type: LOGIN_SUCCESS, payload: res.data })
     }).catch(err => {
         dispatch({type: LOGIN_FAIL})
     })
@@ -81,6 +81,28 @@ export const logout = (authToken) => (dispatch) => {
         }
     }).then(res => dispatch({type: LOGOUT}))
 }
+
+// REGISTER
+export const register = (username, email, password1, password2) => (dispatch) => {
+    dispatch({type: USER_LOADING})
+
+    let body = {
+        username,
+        email,
+        password1,
+        password2
+    }
+
+    axios.post('http://127.0.0.1:8000/api/v1/rest-auth/registration/', JSON.stringify(body), {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then(
+        res => dispatch({type: LOGIN_SUCCESS, payload: res.data})
+    ).catch(err => console.log(err))
+
+}
+
 
 // REDUCER
 export function auth (state=initialState, action){

@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Link, Redirect} from "react-router-dom";
 import PropTypes from 'prop-types';
+import { register } from "../../redux/reducers/authReducers";
+import {connect} from 'react-redux'
 
 export class Register extends Component {
     state = {
@@ -21,19 +23,7 @@ export class Register extends Component {
         if (password !== password2) {
 
         } else {
-            fetch('http://localhost:8000/api/v1/rest-auth/registration/', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: username,
-                    email: email,
-                    password1: password,
-                    password2: password
-                })
-            }).catch(er => alert(er))
+           this.props.register(username, email, password, password2)
         }
     };
 
@@ -105,4 +95,16 @@ export class Register extends Component {
     }
 }
 
-export default Register;
+let mapStateToProps = (state) => {
+    return {
+        isAuthenticated: state.auth.isAuthenticated
+    }
+}
+
+let mapDispatchToProps = (dispatch) => {
+    return {
+        register: (username, email, password, password2) => dispatch(register(username, email, password, password2))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);
