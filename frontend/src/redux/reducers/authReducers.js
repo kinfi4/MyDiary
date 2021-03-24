@@ -1,6 +1,9 @@
-import {onBFCacheRestore} from "web-vitals/dist/modules/lib/onBFCacheRestore";
 import axios from "axios";
 import {CLEAR_THE_STATE} from "./allRecordReducer";
+
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+axios.defaults.xsrfCookieName = "csrftoken";
+
 
 const USER_LOADING = 'USER_LOADING'
 const USER_LOADED = 'USER_LOADED'
@@ -9,12 +12,14 @@ const AUTH_ERROR = ' AUTH_ERROR'
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 const LOGIN_FAIL = 'LOGIN_FAIL'
 const LOGOUT = 'LOGOUT'
+const REGISTRATION_ERROR = 'REGISTRATION_ERROR'
 
 const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     isLoading: false,
-    user: null
+    user: null,
+    errors: []
 }
 
 // CHECK THE TOKEN AND LOAD THE USER
@@ -31,17 +36,15 @@ export const loadUser = () => (dispatch, getState) => {
         headers['Authorization'] = `Token ${token}`
     }
 
-    fetch('http://127.0.0.1:8000/api/v1/rest-auth/user', {
+    axios.get('http://127.0.0.1:8000/api/v1/rest-auth/user', {
         method: 'GET',
         headers: headers
     }).then(res => {
         if(res.status === 200)
-            dispatch({type: USER_LOADED, payload: res.json()})
+            dispatch({type: USER_LOADED, payload: res.data})
         else
             dispatch({type: AUTH_ERROR })
-    }).catch(er => {
-        dispatch({type: AUTH_ERROR})
-    })
+    }).catch(er => er)
 }
 
 // LOGIN
@@ -59,13 +62,10 @@ export const login = (username, password) => (dispatch) => {
         email: ''
     })
 
-    fetch('http://127.0.0.1:8000/api/v1/rest-auth/login/', {
-        method: 'POST',
+    axios.post('http://127.0.0.1:8000/api/v1/rest-auth/login/', body,{
         headers: headers,
-        body: body
-    }).then(res => res.json())
-      .then(data => {
-        dispatch({ type: LOGIN_SUCCESS, payload: data })
+    }).then(res => {
+        dispatch({ type: LOGIN_SUCCESS, payload: res.data })
     }).catch(err => {
         dispatch({type: LOGIN_FAIL})
     })
@@ -81,6 +81,30 @@ export const logout = (authToken) => (dispatch) => {
         }
     }).then(res => dispatch({type: LOGOUT}))
 }
+
+// REGISTER
+export const register = (username, email, password1, password2) => (dispatch) => {
+    dispatch({type: USER_LOADING})
+
+    let body = {
+        username,
+        email,
+        password1,
+        password2
+    }
+
+    axios.post('http://127.0.0.1:8000/api/v1/rest-auth/registration/', JSON.stringify(body), {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then(
+        res => dispatch({type: LOGIN_SUCCESS, payload: res.data})
+    ).catch(err => {
+        dispatch({type: REGISTRATION_ERROR, errors: err.response.data})
+    })
+
+}
+
 
 // REDUCER
 export function auth (state=initialState, action){
@@ -105,10 +129,27 @@ export function auth (state=initialState, action){
                 ...state,
                 token: action.payload.key,
                 isAuthenticated: true,
-                isLoading: false
+                isLoading: false,
+                errors: []
+            }
+        case REGISTRATION_ERROR:
+            let errors = Object.values(action.errors).flat()
+            return {
+                isAuthenticated: false,
+                isLoading: false,
+                token: null,
+                user: null,
+                errors: errors
             }
         case AUTH_ERROR:
         case LOGIN_FAIL:
+            return {
+                isAuthenticated: false,
+                isLoading: false,
+                token: null,
+                user: null,
+                errors: ['Username or password is incorrect']
+            }
         case LOGOUT:
             localStorage.removeItem('token')
             return {
