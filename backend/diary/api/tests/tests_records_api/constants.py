@@ -40,8 +40,8 @@ class TestResponses(Enum):
 
     SINGLE_RECORD_RESPONSE = {
         'id': mock.ANY,
-        'title': TestData.RECORDS_TITLES.value[0],
-        'body': TestData.RECORDS_BODIES.value[0],
+        'title': TestData.RECORDS_TITLES.value[-1],
+        'body': TestData.RECORDS_BODIES.value[-1],
         'created': mock.ANY
     }
 

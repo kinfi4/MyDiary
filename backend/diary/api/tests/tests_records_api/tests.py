@@ -20,7 +20,8 @@ class AllRecordsAndPermissionsApiTests(APITestCase):
         self.client = Client(HTTP_AUTHORIZATION=f'Token {self.token.key}')
         self.anonymous_client = Client()
 
-        for title, body in zip(TestData.RECORDS_TITLES.value, TestData.RECORDS_BODIES.value):
+        test_data = list(zip(TestData.RECORDS_TITLES.value, TestData.RECORDS_BODIES.value))
+        for title, body in reversed(test_data):
             DailyRecord.objects.create(title=title, body=body, author=self.user)
 
     def test_getting_all_records(self):
