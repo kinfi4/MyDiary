@@ -9,6 +9,12 @@ media
 # Backup files # 
 *.bak 
 
+# Logs
+logs/
+
+##### PROD
+prod_settings.py
+
 # If you are using PyCharm # 
 .idea/**/workspace.xml 
 .idea/**/tasks.xml 

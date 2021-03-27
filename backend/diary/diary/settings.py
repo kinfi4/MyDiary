@@ -3,11 +3,6 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = '!9#=k)_l8+fw#ixojr9g!ltt+2gre%@wnohoez3+b^bomo9^!n'
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -71,17 +66,11 @@ WSGI_APPLICATION = 'diary.wsgi.application'
 
 DATABASES = {
     'default': {
-
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-
         'NAME': 'my_diary',
-
         'USER': 'postgres',
-
         'PASSWORD': os.environ.get('DATABASE_PASS'),
-
         'HOST': '127.0.0.1',
-
         'PORT': '5432',
     }
 
@@ -124,12 +113,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / '../static'
-
-STATICFILES_DIRS = (
-    (BASE_DIR / '../../frontend/build/static'),
-)
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -148,7 +131,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_NAME = "csrftoken"
 
-# CORS_ORIGIN_WHITELIST = (
-#     'http://localhost:3000',
-#     'http://localhost:8000',
-# )
+try:
+    from local_settings import *
+except ImportError:
+    from prod_settings import *
