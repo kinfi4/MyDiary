@@ -110,10 +110,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -133,5 +129,5 @@ CSRF_COOKIE_NAME = "csrftoken"
 
 try:
     from local_settings import *
-except ImportError:
+except (ImportError, ModuleNotFoundError):
     from prod_settings import *
