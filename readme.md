@@ -1,6 +1,6 @@
 # Diary
 
-Diary is a simple fullstack app  
+Diary is a simple fullstack app.  
 Backend side was made using DRF(Django Rest Framework) while the fronted side was made using React.js + Redux libraries
 
 The idea behind the application is to have a dedicated place to store, create new and manage existing diary entries. 
