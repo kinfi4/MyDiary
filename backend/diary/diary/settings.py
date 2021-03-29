@@ -128,6 +128,6 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_NAME = "csrftoken"
 
 try:
-    from local_settings import *
+    from diary.local_settings import *
 except (ImportError, ModuleNotFoundError):
-    from prod_settings import *
+    from diary.prod_settings import *
